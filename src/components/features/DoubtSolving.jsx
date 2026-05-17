@@ -63,6 +63,12 @@ const DoubtSolving = () => {
         { id: 26, question: 'What are the basic rules for participating in the school debate competition?', subject: 'Extra Curricular', author: 'Vikram S.', time: '10 hours ago', answers: [{ author: 'Mr. Das (Coordinator)', text: '3 minutes per speaker, 1 rebuttal allowed per team. Teams of 2.', time: '8 hours ago' }], resolved: true, hasImage: false },
         { id: 27, question: 'Can someone share tips for improving public speaking skills?', subject: 'Extra Curricular', author: 'Anjali M.', time: '20 hours ago', answers: [], resolved: false, hasImage: false },
         { id: 28, question: 'Are there any specific guidelines for the annual art exhibition submissions?', subject: 'Extra Curricular', author: 'Meera N.', time: '3 days ago', answers: [{ author: 'Mrs. Rao (Art Teacher)', text: 'Max size A3. Must be framed. Theme is "Nature". Deadline is Friday.', time: '2 days ago' }], resolved: true, hasImage: false },
+
+        // Computer Science
+        { id: 29, question: 'What is the difference between an Abstract Class and an Interface in Java?', subject: 'Computer Science', author: 'Rohan G.', time: '1 hour ago', answers: [{ author: 'Mrs. Aditi (CS Teacher)', text: 'Abstract classes can have instance variables and concrete methods. Interfaces primarily define static constants and abstract methods (multiple inheritance tool).', time: '30 min ago' }], resolved: true, hasImage: false },
+        { id: 30, question: 'How does a Binary Search algorithm achieve O(log n) time complexity?', subject: 'Computer Science', author: 'Siddharth M.', time: '4 hours ago', answers: [{ author: 'Tutor Mike', text: 'By dividing the sorted search range in half on each step. It eliminates half the elements in one comparison.', time: '3 hours ago' }], resolved: true, hasImage: false },
+        { id: 31, question: 'What is the difference between SQL and NoSQL databases?', subject: 'Computer Science', author: 'Sneha R.', time: '1 day ago', answers: [], resolved: false, hasImage: false },
+        { id: 32, question: 'Can someone explain the purpose of recursion in programming?', subject: 'Computer Science', author: 'Vikram S.', time: '2 days ago', answers: [{ author: 'Mrs. Aditi (CS Teacher)', text: 'Recursion is when a function calls itself to solve a smaller instance of the same problem. It requires a defined base case to stop execution.', time: '1 day ago' }], resolved: true, hasImage: false }
     ]);
 
     const filtered = doubts.filter(d =>
@@ -96,6 +102,7 @@ const DoubtSolving = () => {
         'Kannada': '#06b6d4',
         'English': '#f43f5e',
         'Extra Curricular': '#84cc16',
+        'Computer Science': '#6366f1',
     };
     const subjects = Object.keys(subjectColors);
 

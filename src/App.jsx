@@ -10,6 +10,7 @@ import DoubtSolving from './components/features/DoubtSolving'
 import ReportCard from './components/features/ReportCard'
 import NoticeBoard from './components/features/NoticeBoard'
 import HelpCareBox from './components/features/HelpCareBox'
+import PrepBox from './components/features/PrepBox'
 
 import './App.css'
 
@@ -42,6 +43,7 @@ function App() {
                         <Route path="report-card" element={<ReportCard />} />
                         <Route path="notices" element={<NoticeBoard />} />
                         <Route path="help-care" element={<HelpCareBox />} />
+                        <Route path="prep-box" element={<PrepBox />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

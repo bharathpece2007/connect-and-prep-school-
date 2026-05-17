@@ -6,7 +6,7 @@ import { mockBackend } from '../../services/mockBackend';
 import {
     LogOut, Layout, GraduationCap, Calendar,
     Clock, Bell, Sun, Moon, MessageSquare, FileText,
-    BookOpenCheck, BarChart2, Megaphone, Heart, User
+    BookOpenCheck, BarChart2, Megaphone, Heart, User, Bot
 } from 'lucide-react';
 import './DashboardLayout.css';
 
@@ -30,6 +30,7 @@ const DashboardLayout = () => {
 
         { type: 'divider' },
 
+        { label: 'Prep Box AI', icon: <Bot size={20} />, path: '/dashboard/prep-box' },
         { label: 'Doubt Solving', icon: <MessageSquare size={20} />, path: '/dashboard/doubts' },
         { label: 'Report Card', icon: <BarChart2 size={20} />, path: '/dashboard/report-card' },
         { label: 'Notice Board', icon: <Megaphone size={20} />, path: '/dashboard/notices' },

@@ -147,39 +147,39 @@
     font-size: 0.8rem;
 }
 
-/* Force light grey for tables in light theme */
+/* Force clean styling for tables in light theme */
 :root[data-theme="light"] .summary-section,
 :root[data-theme="light"] .daywise-section {
-    background: #D1D5DB !important;
-    color: #000000 !important;
-    border-color: #000000 !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    border-color: #111827 !important;
 }
 
 :root[data-theme="light"] .section-title {
-    background: rgba(0, 0, 0, 0.05) !important;
-    color: #000000 !important;
-    border-bottom: 2px solid #000000 !important;
+    background: #f9fafb !important;
+    color: #111827 !important;
+    border-bottom: 2px solid #111827 !important;
 }
 
 :root[data-theme="light"] .data-table th {
-    color: #000000 !important;
-    border-bottom: 2px solid #000000 !important;
+    color: #4b5563 !important;
+    border-bottom: 2px solid #111827 !important;
     font-weight: 800 !important;
 }
 
 :root[data-theme="light"] .data-table td {
-    color: #000000 !important;
-    border-bottom: 1px solid #000000 !important;
+    color: #111827 !important;
+    border-bottom: 1px solid #e5e7eb !important;
 }
 
 :root[data-theme="light"] .table-footer {
-    color: #000000 !important;
+    color: #4b5563 !important;
 }
 
 :root[data-theme="light"] .search-box input {
-    background: #fff !important;
-    color: #000 !important;
-    border: 1px solid #000 !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #111827 !important;
 }
 
 /* ==================== MOBILE ==================== */

@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Upload, Clock, CheckCircle, AlertTriangle, FileText } from 'lucide-react';
 import '../features/FeatureStyles.css';
 
 const HomeworkHub = () => {
+    const fileInputRef = useRef(null);
+    const [activeAssignmentId, setActiveAssignmentId] = useState(null);
     const [assignments, setAssignments] = useState([
         { id: 1, subject: 'Mathematics', title: 'Chapter 7 - Quadratic Equations Ex 4.2', due: 'May 16, 2026', status: 'assigned', color: '#FFC229' },
         { id: 2, subject: 'Science', title: 'Plant Cell Diagram & Labeling', due: 'May 17, 2026', status: 'submitted', color: '#4ade80' },
@@ -15,6 +17,22 @@ const HomeworkHub = () => {
         { id: 9, subject: 'Art', title: 'Still Life Sketch', due: 'May 22, 2026', status: 'submitted', color: '#fb923c' },
         { id: 10, subject: 'Physics', title: 'Kinematics Problems', due: 'May 17, 2026', status: 'revision', color: '#34d399' },
     ]);
+
+    const triggerFileInput = (id) => {
+        setActiveAssignmentId(id);
+        fileInputRef.current.click();
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file && activeAssignmentId) {
+            setAssignments(prev => prev.map(a => 
+                a.id === activeAssignmentId ? { ...a, status: 'submitted' } : a
+            ));
+            alert(`🎉 File "${file.name}" uploaded successfully!\nYour homework assignment has been submitted.`);
+            setActiveAssignmentId(null);
+        }
+    };
 
     const statusBadge = (status) => {
         const config = {
@@ -72,12 +90,12 @@ const HomeworkHub = () => {
                                         {statusBadge(item.status)}
                                     </div>
                                     {item.status === 'assigned' && (
-                                        <button className="hw-submit-btn">
+                                        <button className="hw-submit-btn" onClick={() => triggerFileInput(item.id)}>
                                             <Upload size={14} /> Submit File
                                         </button>
                                     )}
                                     {item.status === 'revision' && (
-                                        <button className="hw-submit-btn revision-btn">
+                                        <button className="hw-submit-btn revision-btn" onClick={() => triggerFileInput(item.id)}>
                                             <Upload size={14} /> Re-Submit
                                         </button>
                                     )}
@@ -88,6 +106,13 @@ const HomeworkHub = () => {
                     </div>
                 ))}
             </div>
+            {/* Hidden native file input wrapper */}
+            <input 
+                type="file" 
+                ref={fileInputRef} 
+                style={{ display: 'none' }} 
+                onChange={handleFileChange} 
+            />
         </div>
     );
 };

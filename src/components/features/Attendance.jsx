@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
-import { Calendar, Bell, CheckCircle, XCircle } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Calendar, Bell, CheckCircle, XCircle, FileText, Upload } from 'lucide-react';
 import '../features/FeatureStyles.css';
 
 const Attendance = () => {
     const today = new Date();
     const [currentMonth, setCurrentMonth] = useState(today.getMonth());
     const [currentYear] = useState(today.getFullYear());
+    const [selectedAbsentDay, setSelectedAbsentDay] = useState(null);
+    const [selectedHolidayDay, setSelectedHolidayDay] = useState(null);
+    const [uploadedDocuments, setUploadedDocuments] = useState({});
+    const absentFileInputRef = useRef(null);
 
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -14,14 +18,58 @@ const Attendance = () => {
 
     // Mock attendance data (day: 'present' | 'absent' | null)
     const attendanceRecord = {};
+    const isPastOrCurrentMonth = (currentYear < today.getFullYear()) || 
+                                 (currentYear === today.getFullYear() && currentMonth <= today.getMonth());
+
     for (let i = 1; i <= daysInMonth; i++) {
         const dayOfWeek = new Date(currentYear, currentMonth, i).getDay();
-        if (dayOfWeek === 0) {
-            attendanceRecord[i] = 'holiday'; // Sunday
-        } else if (i <= today.getDate() || currentMonth < today.getMonth()) {
-            attendanceRecord[i] = Math.random() > 0.12 ? 'present' : 'absent';
+        const isSpecificHoliday = currentMonth === 4 && [1, 10, 25].includes(i); // May specific holidays
+
+        if (dayOfWeek === 0 || isSpecificHoliday) {
+            attendanceRecord[i] = 'holiday'; 
+        } else if (isPastOrCurrentMonth) {
+            const isPastDay = (currentYear < today.getFullYear()) || 
+                              (currentYear === today.getFullYear() && currentMonth < today.getMonth()) ||
+                              (currentYear === today.getFullYear() && currentMonth === today.getMonth() && i <= today.getDate());
+            
+            if (isPastDay) {
+                attendanceRecord[i] = Math.random() > 0.12 ? 'present' : 'absent';
+            }
         }
     }
+
+    const getHolidayReason = (day) => {
+        const date = new Date(currentYear, currentMonth, day);
+        const dayOfWeek = date.getDay();
+        
+        // Mock specific holiday reasons
+        if (currentMonth === 4) { // May
+            if (day === 1) return "May Day / International Labour Day - Dedicated to celebrating the social and economic achievements of workers worldwide.";
+            if (day === 10) return "Buddha Purnima - Celebrating the birth, enlightenment, and death of Gautama Buddha.";
+            if (day === 25) return "Spring Semester Break - Official school holidays for term transition and curriculum alignment.";
+        }
+
+        if (dayOfWeek === 0) {
+            return "Weekly Sunday Holiday - Time to relax, recharge, spend time with loved ones, and prepare for the academic week ahead!";
+        }
+        return "Official School Holiday.";
+    };
+
+    const handleAbsentFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file && selectedAbsentDay) {
+            setUploadedDocuments(prev => ({
+                ...prev,
+                [selectedAbsentDay]: file.name
+            }));
+            alert(`🎉 Leave certificate "${file.name}" uploaded successfully for ${monthNames[currentMonth]} ${selectedAbsentDay}!`);
+            setSelectedAbsentDay(null);
+        }
+    };
+
+    const triggerAbsentFileInput = () => {
+        absentFileInputRef.current.click();
+    };
 
     const totalDays = Object.values(attendanceRecord).filter(v => v === 'present' || v === 'absent').length;
     const presentDays = Object.values(attendanceRecord).filter(v => v === 'present').length;
@@ -75,32 +123,93 @@ const Attendance = () => {
                         ))}
                         {calendarDays.map((day, i) => {
                             const status = day ? attendanceRecord[day] : null;
+                            const isVerified = status === 'absent' && uploadedDocuments[day];
                             return (
-                                <div key={i} className={`att-cal-day ${!day ? 'empty' : ''} ${status || ''}`}>
-                                    {day && (
-                                        <>
-                                            <span className="att-day-num">{day}</span>
-                                            {status === 'present' && <div className="att-dot present" />}
-                                            {status === 'absent' && <div className="att-dot absent" />}
-                                            {status === 'holiday' && <div className="att-dot holiday" />}
-                                        </>
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </div>
-
-                    <div className="att-legend">
-                        <span><div className="att-dot present" /> Present</span>
-                        <span><div className="att-dot absent" /> Absent</span>
-                        <span><div className="att-dot holiday" /> Holiday</span>
-                    </div>
+                                <div 
+                                    key={i} 
+                                    className={`att-cal-day ${!day ? 'empty' : ''} ${status || ''} ${isVerified ? 'verified' : ''}`}
+                                onClick={() => {
+                                    if (status === 'absent') setSelectedAbsentDay(day);
+                                    if (status === 'holiday') setSelectedHolidayDay(day);
+                                }}
+                            >
+                                {day && (
+                                    <>
+                                        <span className="att-day-num">{day}</span>
+                                        {status === 'present' && <div className="att-dot present" />}
+                                        {status === 'absent' && (
+                                            isVerified ? (
+                                                <span style={{ fontSize: '0.62rem', color: '#4ade80', fontWeight: '800', marginTop: '2px' }}>Verified</span>
+                                            ) : (
+                                                <div className="att-dot absent" />
+                                            )
+                                        )}
+                                        {status === 'holiday' && <div className="att-dot holiday" />}
+                                    </>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
 
-
+                <div className="att-legend">
+                    <span><div className="att-dot present" /> Present</span>
+                    <span><div className="att-dot absent" /> Absent</span>
+                    <span><div className="att-dot holiday" /> Holiday</span>
+                </div>
             </div>
         </div>
-    );
+
+        {/* Modal Popup for absent day leave upload */}
+        {selectedAbsentDay !== null && (
+            <div className="att-modal-overlay" onClick={() => setSelectedAbsentDay(null)}>
+                <div className="att-modal" onClick={e => e.stopPropagation()}>
+                    <h3>Submit Absence Verification</h3>
+                    <p>Upload a supporting document (medical certificate or parent note) for the absence on <strong>{monthNames[currentMonth]} {selectedAbsentDay}, {currentYear}</strong>.</p>
+                    
+                    <div className="att-modal-actions">
+                        <button className="att-modal-btn" onClick={triggerAbsentFileInput}>
+                            <Upload size={18} /> Upload Document
+                        </button>
+                        <button className="att-modal-close" onClick={() => setSelectedAbsentDay(null)}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {/* Modal Popup for Holiday Reason */}
+        {selectedHolidayDay !== null && (
+            <div className="att-modal-overlay" onClick={() => setSelectedHolidayDay(null)}>
+                <div className="att-modal att-modal-holiday" onClick={e => e.stopPropagation()}>
+                    <h3>School Holiday Information</h3>
+                    <div style={{ margin: '15px 0', fontSize: '2.5rem' }}>🎉</div>
+                    <p style={{ fontSize: '1rem', color: '#3b82f6', fontWeight: '850', margin: '5px 0' }}>
+                        {monthNames[currentMonth]} {selectedHolidayDay}, {currentYear}
+                    </p>
+                    <p style={{ margin: '1.25rem 0 2rem', color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.6' }}>
+                        {getHolidayReason(selectedHolidayDay)}
+                    </p>
+                    <div className="att-modal-actions">
+                        <button className="att-modal-btn att-modal-btn-holiday" onClick={() => setSelectedHolidayDay(null)}>
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {/* Hidden native document/file input */}
+        <input 
+            type="file" 
+            ref={absentFileInputRef} 
+            onChange={handleAbsentFileChange} 
+            style={{ display: 'none' }}
+            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+        />
+    </div>
+);
 };
 
 export default Attendance;

@@ -156,6 +156,24 @@ export const alumniAPI = {
     }),
 };
 
+// AI Chat API
+export const aiAPI = {
+    chat: (message, history) => apiRequest('/ai/chat', {
+        method: 'POST',
+        body: JSON.stringify({ message, history }),
+    }),
+};
+
+// Chats API
+export const chatsAPI = {
+    getRooms: () => apiRequest('/chats/rooms'),
+    getMessages: (roomId) => apiRequest(`/chats/messages/${roomId}`),
+    sendMessage: (roomId, message, user) => apiRequest('/chats/messages', {
+        method: 'POST',
+        body: JSON.stringify({ roomId, message, user }),
+    }),
+};
+
 // New Features API
 export const extraAPI = {
     getPlacements: () => Promise.resolve([]), // Fallback if backend not ready

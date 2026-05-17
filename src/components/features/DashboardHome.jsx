@@ -107,20 +107,10 @@ const DashboardHome = () => {
                             </div>
                         </div>
 
-                        <div className="dh-stat-card">
-                            <div className="dh-stat-icon" style={{ background: 'rgba(167,139,250,0.15)' }}>
-                                <TrendingUp size={22} color="#a78bfa" />
-                            </div>
-                            <div className="dh-stat-body">
-                                <span className="dh-stat-label">CURRENT XP</span>
-                                <span className="dh-stat-value">4,500 <span className="rank-badge">#2</span></span>
-                                <span className="dh-stat-sub">Scholar Rank</span>
-                            </div>
-                        </div>
                     </div>
 
                     {/* AI Study Goal Banner */}
-                    <div className="dh-roadmap-banner">
+                    <div className="dh-roadmap-banner" style={{ cursor: 'pointer' }} onClick={() => navigate('/dashboard/prep-box')}>
                         <div className="dh-roadmap-left">
                             <div className="dh-roadmap-icon">
                                 <Target size={28} color="#a78bfa" />
@@ -130,7 +120,7 @@ const DashboardHome = () => {
                                 <p>You have 2 topics left to revise for your upcoming 2024 Exam.</p>
                             </div>
                         </div>
-                        <button className="dh-roadmap-btn">RESUME ROADMAP</button>
+                        <button className="dh-roadmap-btn" onClick={(e) => { e.stopPropagation(); navigate('/dashboard/prep-box'); }}>RESUME ROADMAP</button>
                     </div>
 
                     {/* Pending Tasks */}
@@ -186,12 +176,6 @@ const DashboardHome = () => {
                             </div>
                         </div>
                     </div>
-
-                    {/* Parent View Toggle at bottom */}
-                    <div className="dh-parent-toggle-bar" onClick={() => setParentView(true)}>
-                        <ToggleLeft size={20} color="#666" />
-                        <span>Switch to Parent View</span>
-                    </div>
                 </>
             ) : (
                 /* Parent Overview */
@@ -221,10 +205,6 @@ const DashboardHome = () => {
                             <p className="fee-text">{childOverview.upcomingFees}</p>
                             <button className="dh-roadmap-btn" style={{ marginTop: '1rem' }}>Pay Now</button>
                         </div>
-                    </div>
-                    <div className="dh-parent-toggle-bar" onClick={() => setParentView(false)}>
-                        <ToggleRight size={20} color="#FFC229" />
-                        <span style={{ color: '#FFC229' }}>Switch to Student View</span>
                     </div>
                 </>
             )}
