@@ -4,14 +4,6 @@ import {
     PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
     BarChart, Bar, XAxis, YAxis, CartesianGrid
 } from 'recharts';
-<<<<<<< HEAD
-import { BookOpen, CheckCircle, Clock, TrendingUp, Calendar, AlertCircle, Target } from 'lucide-react';
-import './DashboardHome.css'; 
-
-const DashboardHome = () => {
-    const navigate = useNavigate();
-    // Mock Data - In a real app, this would come from an API
-=======
 import { Calendar, CheckCircle, Clock, AlertCircle, TrendingUp, Target, ToggleLeft, ToggleRight } from 'lucide-react';
 import './DashboardHome.css';
 
@@ -29,7 +21,6 @@ const DashboardHome = () => {
         { id: 4, title: 'History Assignment - French Rev', due: 'In 5 days', priority: 'low' },
     ];
 
->>>>>>> 41146800e0a9b29044de3f30e724c130dae74304
     const attendanceData = [
         { name: 'Present', value: 92, color: '#4ade80' },
         { name: 'Absent', value: 8, color: '#f87171' }
@@ -68,68 +59,10 @@ const DashboardHome = () => {
                         {parentView ? childOverview.grade : 'Your centralized hub for academic excellence.'}
                     </p>
                 </div>
-<<<<<<< HEAD
-                <div className="date-badge">
-                    <Calendar size={16} />
-                    <span>{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
-                </div>
-            </div>
-
-            {/* Quick Stats Row */}
-            <div className="stats-grid">
-                <div className="stat-card streak-card">
-                    <div className="stat-icon-wrapper">
-                        <TrendingUp size={24} />
-                    </div>
-                    <div className="stat-content">
-                        <h3>Study Streak</h3>
-                        <div className="stat-value">12 Days <span className="fire-emoji">🔥</span></div>
-                        <p className="stat-subtitle">Keep it up!</p>
-                    </div>
-                </div>
-
-                <div className="stat-card pending-card" 
-                    onClick={() => navigate('/dashboard/homework', { state: { filter: 'Pending' } })}
-                    style={{ cursor: 'pointer' }}
-                >
-                    <div className="stat-icon-wrapper">
-                        <AlertCircle size={24} />
-                    </div>
-                    <div className="stat-content">
-                        <h3>Tasks Pending</h3>
-                        <div className="stat-value">5</div>
-                        <p className="stat-subtitle">High Priority</p>
-                    </div>
-                </div>
-
-                <div className="stat-card event-card">
-                    <div className="stat-icon-wrapper">
-                        <Clock size={24} />
-                    </div>
-                    <div className="stat-content">
-                        <h3>Next Event</h3>
-                        <div className="stat-value event-name">Math Marathon</div>
-                        <p className="stat-subtitle">Today, 2:00 PM</p>
-                    </div>
-                </div>
-
-                <div className="stat-card xp-card" 
-                    onClick={() => navigate('/dashboard/leaderboard')}
-                    style={{ cursor: 'pointer' }}
-                >
-                    <div className="stat-icon-wrapper">
-                        <TrendingUp size={24} color="var(--accent-action)" />
-                    </div>
-                    <div className="stat-content">
-                        <h3>Current XP</h3>
-                        <div className="stat-value">4,500 <span className="rank-badge">#2</span></div>
-                        <p className="stat-subtitle">Scholar Rank</p>
-=======
                 <div className="dh-welcome-right">
                     <div className="dh-date-badge">
                         <Calendar size={14} />
                         <span>{dateString}</span>
->>>>>>> 41146800e0a9b29044de3f30e724c130dae74304
                     </div>
                 </div>
             </div>
