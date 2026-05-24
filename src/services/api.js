@@ -26,6 +26,28 @@ const apiRequest = async (endpoint, options = {}) => {
     return data;
 };
 
+// Dedicated base URL and request helper for the Python AI chat backend
+const AI_API_BASE_URL = 'http://localhost:5002/api';
+
+const aiApiRequest = async (endpoint, options = {}) => {
+    const response = await fetch(`${AI_API_BASE_URL}${endpoint}`, {
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...getAuthHeaders(),
+            ...options.headers,
+        },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'API request failed');
+    }
+
+    return data;
+};
+
 // Auth API
 export const authAPI = {
     register: (userData) => apiRequest('/auth/register', {
@@ -156,9 +178,9 @@ export const alumniAPI = {
     }),
 };
 
-// AI Chat API
+// AI Chat API (Talks directly to the Python FastAPI backend on port 5002)
 export const aiAPI = {
-    chat: (message, history) => apiRequest('/ai/chat', {
+    chat: (message, history) => aiApiRequest('/ai/chat', {
         method: 'POST',
         body: JSON.stringify({ message, history }),
     }),
